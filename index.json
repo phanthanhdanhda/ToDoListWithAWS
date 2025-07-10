@@ -1,0 +1,190 @@
+[
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.1-create-workflow/",
+	"title": "Create CI/CD workflow file",
+	"tags": [],
+	"description": "",
+	"content": "Create GitHub Actions workflow We will create a simple workflow to:\nSSH into EC2. Pull new code from GitHub. Install dependencies and restart the application with PM2. 🛠️ Step 1: Create the .github/workflows directory At the root of your Node.js project, create the following structure:\nmkdir -p .github/workflows 📝 Step 2: Create the deploy.yml file Create the file .github/workflows/deploy.yml with the following content:\nname: Deploy To EC2 on: push: branches: - main jobs: deploy: runs-on: ubuntu-latest steps: - name: Checkout code uses: actions/checkout@v3 - name: Deploy to EC2 via SSH uses: appleboy/ssh-action@v0.1.10 with: host: ${{ secrets.EC2_HOST }} username: ${{ secrets.EC2_USER }} key: ${{ secrets.EC2_KEY }} script: | cd todo-app git pull origin main npm install pm2 restart all || pm2 start index.js --name todo 🔐 Step 3: Create GitHub Secrets On your GitHub repository page:\nGo to Settings → Secrets and variables → Actions. Click New repository secret. Create the following variables: Variable Description EC2_HOST Public IP of your EC2 EC2_USER SSH username, e.g. ubuntu EC2_KEY Content of your .pem private key ✅ After completing these steps, every time you push code to the main branch, the workflow will automatically connect to EC2, pull the new code, and restart the application with PM2.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/",
+	"title": "Create Network Infrastructure and EC2 Instance",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this section, you will create the basic infrastructure components needed to deploy the application: VPC, Subnet, Internet Gateway, Route Table, Security Group, and an EC2 instance running Ubuntu.\nContents Create VPC Create Subnet Create Internet Gateway and Route Table Create Security Group Create Ubuntu EC2 Instance Expected Results After completing this section, you will have:\n✅ A dedicated VPC named TodoVPC ✅ A public subnet named TodoPublicSubnet ✅ Internet connectivity via Internet Gateway and Route Table ✅ A Security Group allowing SSH (22) and app (3000) ports ✅ An Ubuntu EC2 instance ready for SSH and application setup 💡 If you have previously created these components, you can reuse them to save time. However, it is recommended to go through the full practice to thoroughly understand the AWS infrastructure deployment process.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/4-deploy-static-frontend/4.1-setup-s3/",
+	"title": "Create S3 Bucket for frontend",
+	"tags": [],
+	"description": "",
+	"content": "Create an S3 bucket to store the frontend In this step, you will create an S3 bucket to store the static interface source code of the To-do List application.\n🔧 Step 1: Access the S3 management console Go to Amazon S3 Console Click Create bucket 📥 Step 2: Enter bucket information Bucket name: a unique name, e.g. todo-frontend-\u0026lt;your-name\u0026gt; Uncheck Block all public access to allow public access Check the security warning confirmation 🛡️ Step 3: Disable public access block After creation, go to the Permissions tab Find Block public access (bucket settings) Click Edit, uncheck all, then Save 🌍 Step 4: Allow public read access Go to Permissions tab → Bucket Policy → Edit Paste the following policy: { \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: [ { \u0026#34;Sid\u0026#34;: \u0026#34;PublicReadGetObject\u0026#34;, \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: \u0026#34;*\u0026#34;, \u0026#34;Action\u0026#34;: \u0026#34;s3:GetObject\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::todo-frontend-\u0026lt;your-name\u0026gt;/*\u0026#34; } ] } Click Save Changes 📌 Replace with the exact bucket name you set.\n✅ You have successfully created a public S3 bucket to store the frontend.\nNext, we will upload the HTML/CSS/JS source code to this bucket.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/2.1.1-createvpc/",
+	"title": "Create VPC",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this step, you will create a Virtual Private Cloud (VPC) named TodoVPC to contain the entire network infrastructure for the application.\n🧭 Steps 1. Access the VPC Console Go to: VPC Console Select Your VPCs Click Create VPC 2. Configure VPC information At the Create VPC screen:\nField Value Name tag TodoVPC IPv4 CIDR block 10.10.0.0/16 Tenancy default Keep the remaining options unchanged → Click Create VPC\n3. Check status After creation, check the VPCs list to ensure that VPC TodoVPC has available status.\n✅ Expected Results Successfully created VPC TodoVPC with a private IP range Ready to create subnets and other network components inside the VPC "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/5-cleanup/5.1-delete-resources/",
+	"title": "Delete EC2, S3, CloudFront, Security Group &amp; Key Pair",
+	"tags": [],
+	"description": "",
+	"content": "In this step, you will delete the following resources:\nEC2 Instance Security Group S3 Bucket CloudFront Distribution Key Pair (if no longer needed) 🧹 1. Delete EC2 Instance Go to EC2 Console Select the instance named To-do EC2 Click Instance State → Terminate instance Confirm 🧹 2. Delete Security Group Go to the Security Groups menu (in EC2 or VPC) Delete the security group named TodoSG 💡 If the security group is still attached to an EC2 or other resource, you need to detach it before deleting.\n🧹 3. Delete Key Pair Go to EC2 → Key Pairs If you created LabKeypair or similar just for practice, you can delete it. 🧹 4. Delete S3 Bucket Go to S3 Console Select the bucket containing the static site (e.g. todo-frontend-bucket) Click Empty first → then Delete bucket 🧹 5. Delete CloudFront Distribution Go to CloudFront Console Select the distribution you created → Disable After the status is Disabled, click Delete ⚠️ CloudFront may take a few minutes to change to Disabled status before you can delete it.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/3-deploy-cicd/3.1-deploy-on-ec2/",
+	"title": "Deploy application on EC2",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this section, you will set up the Node.js application to run in the background using PM2, ensuring the application remains running even if the EC2 instance is rebooted.\n1. SSH into EC2 From your computer, open a terminal and run the following command (make sure you are in the directory containing the .pem file):\nssh -i LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; 2. Install PM2 PM2 is a process manager that helps manage Node.js applications running in the background:\nnpm install -g pm2 Check installation: pm2 --version 3. Start the application with PM2 1. Move to the application directory: cd ~/todo-app 2. Start the application with PM2: pm2 start app.js --name todo-app 3. Check status: pm2 list You will see output similar to:\n┌─────┬──────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐\r│ id │ name │ namespace │ version │ mode │ pid │ uptime │ ↺ │ status │ cpu │ mem │ user │ watching │\r├─────┼──────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤\r│ 0 │ todo-app │ default │ 1.0.0 │ fork │ 12345 │ 2s │ 0 │ online │ 0% │ 25.2mb │ ubuntu │ disabled │\r└─────┴──────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘ 4. Set up auto-start after reboot 1. Create a startup script: pm2 startup 2. The above command will print a line like (example): sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v20.5.0/bin \\ pm2 startup systemd -u ubuntu --hp /home/ubuntu 3. Copy and run that line in the terminal. 4. Save the current state: pm2 save 5. Check after reboot (optional) 1. Try rebooting EC2: sudo reboot 2. After EC2 restarts, SSH back in: ssh -i LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; 3. Check PM2: pm2 list The todo-app application should still be running.\n4. Test the application: curl http://localhost:3000 6. Useful PM2 commands Process management: # View realtime logs pm2 logs todo-app # Restart application pm2 restart todo-app # Stop application pm2 stop todo-app # View detailed info pm2 show todo-app # Monitoring dashboard pm2 monit Troubleshooting: # If the application does not start pm2 logs todo-app --lines 50 # Check if the file exists ls -la ~/todo-app/app.js # Check if port is in use sudo netstat -tlnp | grep :3000 7. Check the application from browser 1. Make sure the Security Group has opened port 3000: Go to AWS Console → EC2 → Security Groups Add Inbound Rule: Type: Custom TCP, Port: 3000, Source: 0.0.0.0/0 2. Access the application: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 Expected results ✅ Application runs stably with PM2 ✅ Automatically restarts after reboot ✅ Can be accessed from browser ✅ Logs are managed by PM2 💡 Congratulations! You have completed deploying the Node.js application as a background service on EC2 using PM2.\nTo optimize for production, consider using a reverse proxy like Nginx and an SSL certificate for HTTPS.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/",
+	"title": "Deploy To-do List Application on AWS",
+	"tags": [],
+	"description": "",
+	"content": "Workshop Objectives In this workshop, you will learn how to deploy a real To-do List web application using Node.js and MongoDB on AWS infrastructure. The deployment process follows DevOps thinking: automation, testing, CI/CD, and real-world operations.\nThis is a complete hands-on DevOps project from start to finish, helping you bridge the gap between coding and operations.\nRequirements AWS account with permissions to create EC2, VPC, S3, IAM, and CloudFront. Basic knowledge of SSH, Linux, Git. Installed tools: Git, SSH client, web browser. You may incur costs when deploying on AWS. Make sure you have access and monitor billing.\nContent Overview Introduction\nOverview of the To-do List project and deployment architecture on AWS.\nPrerequisites\nCreate EC2, install environment, test To-do List application running locally on server.\nDeploy AWS Services\nConfigure domain, S3, CloudFront, attach public application.\nSet up CI/CD with GitHub Actions\nAutomatically build \u0026amp; deploy on each source push.\nManagement \u0026amp; Resource Cleanup\nMonitor, optimize and clean up resources after use.\nDeployment Architecture The application is divided into two parts:\nNode.js Backend: runs on EC2, connects to locally installed MongoDB. Static Frontend: build React app \u0026amp; deploy to S3 + CloudFront. This is a simple but practical architecture, helping you quickly get hands-on with core AWS services.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.2-installenvironment/2.2.1-install-node/",
+	"title": "Install Node.js and MongoDB",
+	"tags": [],
+	"description": "",
+	"content": "SSH into EC2 Open terminal (PowerShell or bash). SSH into the instance using private key: ssh -i ~/path/to/LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; Install Node.js Install Node.js LTS version: curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - sudo apt-get install -y nodejs Check versions: node -v npm -v Install MongoDB (local) 1. Import GPG key: curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \\ sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \\ --dearmor 2. Add repository: echo \u0026#34;deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] \\ https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse\u0026#34; | \\ sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list 3. Install MongoDB: sudo apt update sudo apt install -y mongodb-org 4. Start MongoDB service: sudo systemctl start mongod sudo systemctl enable mongod 5. Check MongoDB status: sudo systemctl status mongod You are ready to deploy the application after completing this step.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/1-introduce/",
+	"title": "Introduction",
+	"tags": [],
+	"description": "",
+	"content": "\rThis workshop guides you to deploy a real To-do List web application on AWS, using Node.js and MongoDB (local). This is an ideal environment to get familiar with application deployment, cloud infrastructure configuration, and DevOps integration.\n🎯 Main Objectives Build a real-world To-do List system on EC2 Install Node.js and MongoDB environment directly on the server Public frontend via S3 + CloudFront Set up CI/CD process with GitHub Actions Get familiar with important AWS services: EC2, VPC, S3, IAM, CloudFront If you are looking to learn DevOps through a real project, this is a great place to start.\n👤 Suitable Audience Beginners to AWS who want to deploy real applications Students or interns in information technology Newcomers to DevOps who need basic CI/CD application 📚 Required Knowledge Basic knowledge of Linux command line Know how to use Git Basic understanding of SSH and Node.js is an advantage You will be using real resources on AWS. Make sure you have access and monitor costs in your account!\n👉 Now let\u0026rsquo;s start by preparing the EC2 instance and application environment!\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.2-installenvironment/",
+	"title": "Application Environment Setup",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this section, you will SSH into your EC2 instance to install the Node.js and MongoDB environment (local installation), preparing to run the To-do List web application.\n🧰 Contents You will complete 3 important steps to prepare the application environment:\n✅ Install Node.js and MongoDB ✅ Configure and test the To-do List application ✅ Set up PM2 so the application always runs in the background and starts with the system 📚 Table of Contents 2.2.1 – Install Node.js and MongoDB 2.2.2 – Configure and test the application 2.2.3 – Set up PM2 for background running 💡 This is a crucial step to ensure your application runs stably before proceeding to actual deployment with CI/CD and other AWS services.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.2-installenvironment/2.2.2-config-run-app/",
+	"title": "Configure application and test run",
+	"tags": [],
+	"description": "",
+	"content": "Clone source code 1. Create project directory: mkdir -p ~/todo-app \u0026amp;\u0026amp; cd ~/todo-app 2. Clone source code from GitHub: git clone https://github.com/your-username/todo-list-app.git . 3. Install dependencies: npm install Configure .env (if needed) 1. Create .env file if not exists: touch .env 2. Add local MongoDB configuration: MONGO_URI=mongodb://localhost:27017/todoapp PORT=3000 Test run application 1. Run application: node app.js 2. Access browser and enter: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 3. Check if the To-do List web interface is displayed. If you cannot access, please check:\nPort 3000 is open in Security Group Service has been started successfully IP address is the correct public IP of EC2 instance "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/2.1.2-createpublicsubnet/",
+	"title": "Create Subnet",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this step, you will create a Public Subnet inside the TodoVPC VPC. This subnet will allow your EC2 to access the internet via a public IP.\n🌐 Create Public Subnet TodoPublicSubnet 1. Access the Subnet Console Go to VPC Console Select Subnets from the left menu Click Create subnet 2. Configure Subnet At the Create subnet page:\nField Value VPC ID Select TodoVPC Subnet name TodoPublicSubnet Availability Zone ap-southeast-1a (or the first AZ) IPv4 CIDR block 10.10.1.0/24 → Click Create subnet\n3. Enable Auto Public IP After creation:\nSelect the TodoPublicSubnet subnet in the list Click Actions → Edit subnet settings In Auto-assign IPv4, select Enable Click Save ✅ Expected Results Successfully created TodoPublicSubnet with CIDR 10.10.1.0/24 Automatic Public IP assignment for EC2s in this subnet "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/5-cleanup/5.2-delete-vpc/",
+	"title": "Delete VPC and related components",
+	"tags": [],
+	"description": "",
+	"content": "After deleting all EC2 instances, you can delete the custom VPC and its related components:\n🧹 1. Delete Subnet Go to VPC Console Select Subnets → Delete TodoPublicSubnet if no longer used 🧹 2. Delete Internet Gateway Select Internet Gateways Detach from VPC if attached → then Delete 🧹 3. Delete Route Table Select Route Tables Select the custom route table → Delete 🧹 4. Delete VPC Go to Your VPCs Select TodoVPC → click Delete ✅ After completing these steps, you have released all AWS resources used in this workshop.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/4-deploy-static-frontend/4.2-deploy-static-site/",
+	"title": "Deploy static site to S3",
+	"tags": [],
+	"description": "",
+	"content": "Deploy static site to S3 In this step, you will upload the static interface (HTML, CSS, JS) of the To-do List application to an S3 bucket to make it public on the web.\n📁 Step 1: Prepare the frontend source code Open the To-do List project folder Go to the folder containing the frontend (e.g. public/ or frontend/) Make sure you have index.html and other necessary static files (style.css, script.js, etc.) ☁️ Step 2: Upload the frontend to S3 Method 1: Using AWS CLI (recommended) aws s3 sync ./public s3://todo-frontend-\u0026lt;your-name\u0026gt; --acl public-read ./public: the folder containing the frontend files\nReplace with your actual bucket name\nMethod 2: Using AWS S3 Console Go to the bucket you created Click Upload → Add files or Add folder Select all frontend content (index.html, assets, etc.) Click Upload 🌐 Step 3: Enable Static Website Hosting In the bucket → Properties tab Scroll down to Static website hosting Click Edit Select Enable Enter: Index document: index.html (Optional) Error document: 404.html Click Save changes 🧪 Step 4: Access the website After enabling Static website hosting, you will see the Bucket website endpoint\nClick that link or copy and paste it into your browser\n📌 Example: http://todo-frontend-yourname.s3-website-ap-southeast-1.amazonaws.com\n✅ The To-do List frontend has been successfully deployed on S3.\nNext, we will configure CloudFront to accelerate and provide a nice domain.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/",
+	"title": "Prerequisites",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this section, you will prepare the necessary infrastructure to deploy the To-do List web application using Node.js and MongoDB (local) on EC2.\n📦 Content The preparation consists of 2 main steps:\n🏗️ 2.1. Create network infrastructure and EC2 Instance You will create the following components:\n✅ Dedicated VPC with 2 subnets: public and private ✅ Security Group opening ports 22 and 3000 for EC2 ✅ EC2 Instance running Ubuntu as backend server (local MongoDB) ⚙️ 2.2. Install application environment on EC2 You will SSH into EC2 and perform:\n✅ Install Node.js, MongoDB, and supporting tools ✅ Clone To-do List source code from GitHub ✅ Test the application running on port 3000 via public IP 🎯 Expected Results After completing this section, you will have:\n✅ EC2 instance running Ubuntu ✅ Node.js and MongoDB fully installed ✅ To-do List application running via public IP ✅ Environment ready for the next steps 💡 Note: Some steps like installing Node.js, MongoDB, or SSH are not AWS services, but are very important for real-world application deployment, so they are included in this workshop.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/",
+	"title": "Push code and verify deployment",
+	"tags": [],
+	"description": "",
+	"content": "Push code and check the workflow After creating the CI/CD workflow file, you can test it by pushing to GitHub.\n🚀 Step 1: Push code to GitHub git add . git commit -m \u0026#34;Set up CI/CD deploy with GitHub Actions\u0026#34; git push origin main 📦 Step 2: Check the workflow on GitHub Go to your GitHub repository Open the Actions tab Select the Deploy To EC2 workflow Check the execution steps: Connect to EC2 Pull code Run npm install Restart the application with PM2 🌐 Step 3: Access the application Open your browser and go to:\nhttp://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 If everything is correct, you will see the To-do List web interface working properly after each code push.\nYou should check pm2 logs on EC2 if the application does not respond after deployment.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/3-deploy-cicd/3.2-setup-cicd-githubactions/",
+	"title": "Set up CI/CD with GitHub Actions",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this section, you will configure a CI/CD workflow using GitHub Actions to automatically build and deploy the Node.js application to EC2 whenever there are source code changes on GitHub.\nContent Create CI/CD workflow file Push code and verify deployment "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/4-deploy-static-frontend/4.3-setup-cloudfront/",
+	"title": "Configure CloudFront for content delivery",
+	"tags": [],
+	"description": "",
+	"content": "Configure CloudFront for content delivery In this step, you will configure CloudFront to deliver static content from S3 with faster speed and a more memorable domain name.\n🌐 Step 1: Access CloudFront Open AWS CloudFront Console Click Create Distribution 📥 Step 2: Configure Origin In the Origin Settings section:\nOrigin domain: Select the S3 bucket where you enabled Static website hosting\n⛔ Do not select the default S3 endpoint type (s3.amazonaws.com), choose the one like s3-website... Origin access: Select Public (if you are not using OAC) Viewer protocol policy: Select Redirect HTTP to HTTPS 🛠️ Step 3: Configure default behavior Cache policy: CachingOptimized Response headers policy: SecurityHeadersPolicy (if available) Compress objects automatically: ✅ Enabled Click Create distribution 🕒 Step 4: Wait for CloudFront to be ready You will see a status line “In Progress” Wait about 5–10 minutes until it changes to Enabled 🔗 Step 5: Access via CloudFront In the Domain name column, you will see a domain like:\nd123456abcdef8.cloudfront.net\nAccess that domain to see your frontend in action ✅ Done The To-do List frontend has now been distributed globally via CloudFront!\nYou can use this CloudFront domain to connect the frontend to the API (backend running on EC2).\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/2.1.3-create-igw-rtb/",
+	"title": "Create Internet Gateway and Route Table",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this step, you will create an Internet Gateway and Route Table, then attach them to the subnet so that EC2 can access the Internet.\n🌐 Create Internet Gateway TodoIGW 1. Access Console Go to VPC Console Select Internet Gateways → Click Create internet gateway 2. Configure IGW Field Value Name tag TodoIGW → Click Create internet gateway\n3. Attach IGW to VPC Select the newly created TodoIGW Click Actions → Attach to VPC Select VPC: TodoVPC → Click Attach 📡 Create Route Table TodoPublicRTB 4. Create a new Route Table Go back to VPC Console Select Route Tables → Click Create route table Field Value Name tag TodoPublicRTB VPC TodoVPC → Click Create route table\n🔁 Add Internet Route and Assign Subnet 5. Add route to Internet Select the newly created TodoPublicRTB Tab Routes → Click Edit routes → Add route Field Value Destination 0.0.0.0/0 Target TodoIGW (Internet Gateway) → Click Save changes\n6. Associate with Public Subnet Tab Subnet associations → Click Edit subnet associations Tick: TodoPublicSubnet → Click Save associations ✅ After this step, EC2 in the TodoPublicSubnet can access the Internet.\n🔧 Note: Make sure the TodoPublicSubnet has Auto-assign IPv4 enabled in step 2.1.2 so EC2 receives a public IP.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/3-deploy-cicd/",
+	"title": "Deploy backend and CI/CD",
+	"tags": [],
+	"description": "",
+	"content": "\rThis chapter guides you to deploy the Node.js (To-do List) application on EC2 and set up CI/CD using GitHub Actions for automatic deployment on every change.\nObjectives: Deploy the application automatically with a script when EC2 starts Set up a reverse proxy with Nginx to serve the application on port 80 Configure proper firewall rules Automate backend deployment with GitHub Actions Content Deploy Node.js application to EC2 Set up CI/CD with GitHub Actions "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.2-installenvironment/2.2.3-setup-pm2/",
+	"title": "Set up PM2 for background running",
+	"tags": [],
+	"description": "",
+	"content": "Install PM2 PM2 is a process manager that helps Node.js applications always run in the background and automatically restart when encountering errors or after a system reboot.\n1. Install PM2: npm install -g pm2 Run the application with PM2 1. Navigate to the project directory: cd ~/todo-app 2. Start the application with PM2: pm2 start app.js --name todo-app 3. Check status: pm2 status Set up system startup 1. Enable PM2 to start with the system: pm2 startup 2. Execute the printed command (example): sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.17.0/bin \\ pm2 startup systemd -u ubuntu --hp /home/ubuntu 3. Save the process list: pm2 save Verify the application 1. Open your browser and go to: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 2. If the server reboots, the application will still run thanks to PM2. Useful PM2 commands # View logs pm2 logs todo-app # Restart application pm2 restart todo-app # Stop application pm2 stop todo-app # Remove application from PM2 pm2 delete todo-app # View detailed information pm2 show todo-app PM2 also supports logging, automatic restart, cluster mode, and managing multiple applications — very useful for production environments.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/2.1.4-create-security-group/",
+	"title": "Create Security Group",
+	"tags": [],
+	"description": "",
+	"content": "Create Security Group for the application We will create a new Security Group to open the necessary ports for deploying the To-do List web application on EC2:\nOpen port 22 to SSH into the server Open port 3000 to access the web application Steps Go to EC2 Console \u0026gt; Security Groups Click Create security group Configure: Security group name: TodoSG Description: Security Group for To-do List App VPC: select TodoVPC Add Inbound rules: Type: SSH | Protocol: TCP | Port: 22 | Source: My IP Type: Custom TCP | Protocol: TCP | Port: 3000 | Source: 0.0.0.0/0 💡 Open port 3000 to the entire internet because your application will run on this port. You can restrict the IP if you only need internal access.\nKeep Outbound rule (Allow all traffic) unchanged\nClick Create security group\n✅ After this step, you have the TodoSG Security Group ready to assign to EC2 in the next step.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/4-deploy-static-frontend/",
+	"title": "Deploy static frontend with S3 and CloudFront",
+	"tags": [],
+	"description": "",
+	"content": "\rIn this chapter, you will deploy the static web interface (HTML/CSS/JS) of the To-do List application to Amazon S3, then use CloudFront to distribute the content via CDN.\n✅ Objectives Create an S3 bucket to store the static site Configure the bucket for public access Deploy the frontend via AWS CLI or console Create a CloudFront Distribution to deliver the website globally 📚 Content Create S3 Bucket for frontend Deploy static site to S3 Configure CloudFront for content delivery "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/5-cleanup/",
+	"title": "Clean up resources",
+	"tags": [],
+	"description": "",
+	"content": "After completing the workshop, you should delete any unused AWS resources to avoid incurring charges.\nResources you have used:\nEC2 Instance (Ubuntu) Security Group Key Pair (if newly created) S3 Bucket containing static frontend CloudFront Distribution VPC and related components Content Delete EC2, S3, CloudFront, Security Group \u0026amp; Key Pair Delete VPC and related components "
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/2-prerequiste/2.1-createec2/2.1.5-create-ec2-ubuntu/",
+	"title": "Create EC2 Ubuntu Instance",
+	"tags": [],
+	"description": "",
+	"content": "Create EC2 Instance Go to the EC2 Console Click Launch Instance Configure: Field Value Name todo-ubuntu AMI Ubuntu Server 22.04 LTS (64-bit) Instance type t2.micro Key pair Select or create a new one Network TodoVPC Subnet TodoPublicSubnet Auto-assign IP Enable Security Group TodoSG 💡 Make sure the TodoPublicSubnet has Auto-assign IPv4 enabled so the EC2 instance receives a public IP, allowing you to SSH and access the web app easily.\nClick Launch Instance to create ✅ After this step, the EC2 instance is ready for SSH and application installation.\n"
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
