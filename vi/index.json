@@ -1,188 +1,188 @@
 [
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.1-install-node/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.1-install-node/",
 	"title": "Cài đặt Node.js và MongoDB",
 	"tags": [],
 	"description": "",
 	"content": "SSH vào EC2 Mở terminal (PowerShell hoặc bash). SSH vào instance bằng private key: ssh -i ~/path/to/LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; Cài đặt Node.js Cài đặt Node.js phiên bản LTS: curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - sudo apt-get install -y nodejs Kiểm tra phiên bản: node -v npm -v Cài đặt MongoDB (local) 1. Import GPG key: curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \\\\ sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \\\\ --dearmor 2. Thêm repository: echo \u0026#34;deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] \\\\ https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse\u0026#34; | \\\\ sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list 3. Cài MongoDB: sudo apt update sudo apt install -y mongodb-org 4. Khởi động dịch vụ MongoDB: sudo systemctl start mongod sudo systemctl enable mongod 5. Kiểm tra trạng thái MongoDB: sudo systemctl status mongod Bạn đã sẵn sàng để triển khai ứng dụng sau khi hoàn tất bước này.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/1-introduce/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/1-introduce/",
 	"title": "Giới thiệu",
 	"tags": [],
 	"description": "",
 	"content": "\rWorkshop này hướng dẫn bạn triển khai một ứng dụng web To-do List thực tế trên AWS, sử dụng Node.js và MongoDB (local). Đây là môi trường lý tưởng để làm quen với triển khai ứng dụng, cấu hình hạ tầng cloud, và tích hợp DevOps.\n🎯 Mục tiêu chính Xây dựng hệ thống To-do List hoạt động thực tế trên EC2 Cài đặt môi trường Node.js và MongoDB trực tiếp trên máy chủ Public frontend thông qua S3 + CloudFront Thiết lập quy trình CI/CD bằng GitHub Actions Làm quen với các dịch vụ AWS quan trọng: EC2, VPC, S3, IAM, CloudFront Nếu bạn đang tìm cách học DevOps bằng dự án thực tế, thì đây là một lựa chọn tuyệt vời để bắt đầu.\n👤 Đối tượng phù hợp Người mới học AWS muốn triển khai ứng dụng thực tế Sinh viên hoặc thực tập sinh ngành công nghệ thông tin Người mới học DevOps cần ứng dụng CI/CD cơ bản 📚 Kiến thức cần có Biết cơ bản về dòng lệnh Linux Biết sử dụng Git Có hiểu biết sơ bộ về SSH và Node.js là một lợi thế Bạn sẽ sử dụng tài nguyên thực trên AWS. Hãy đảm bảo bạn có quyền truy cập và theo dõi chi phí trong tài khoản của mình!\n👉 Giờ hãy bắt đầu bằng việc chuẩn bị EC2 instance và môi trường ứng dụng!\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.1-create-workflow/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.1-create-workflow/",
 	"title": "Tạo file workflow CI/CD",
 	"tags": [],
 	"description": "",
 	"content": "Tạo workflow GitHub Actions Chúng ta sẽ tạo một workflow đơn giản để:\nSSH vào EC2. Pull code mới từ GitHub. Cài đặt dependency và khởi động lại ứng dụng với PM2. 🛠️ Bước 1: Tạo thư mục .github/workflows Tại thư mục gốc của dự án Node.js, tạo cấu trúc sau:\nmkdir -p .github/workflows 📝 Bước 2: Tạo file deploy.yml Tạo file .github/workflows/deploy.yml với nội dung như sau:\nname: Deploy To EC2 on: push: branches: - main jobs: deploy: runs-on: ubuntu-latest steps: - name: Checkout code uses: actions/checkout@v3 - name: Deploy to EC2 via SSH uses: appleboy/ssh-action@v0.1.10 with: host: ${{ secrets.EC2_HOST }} username: ${{ secrets.EC2_USER }} key: ${{ secrets.EC2_KEY }} script: | cd todo-app git pull origin main npm install pm2 restart all || pm2 start index.js --name todo 🔐 Bước 3: Tạo GitHub Secrets Trên trang GitHub repo của bạn:\nVào Settings → Secrets and variables → Actions. Nhấn New repository secret. Tạo các biến sau: Tên biến Ý nghĩa EC2_HOST Public IP của EC2 EC2_USER Tên user để SSH, ví dụ ubuntu EC2_KEY Nội dung file .pem (private key) ✅ Sau khi hoàn thành, mỗi khi bạn push code lên nhánh main, workflow sẽ tự động kết nối vào EC2, pull code mới và restart lại ứng dụng với PM2.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/",
 	"title": "Tạo hạ tầng mạng và EC2 Instance",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong phần này, bạn sẽ tạo các thành phần hạ tầng cơ bản để triển khai ứng dụng: VPC, Subnet, Internet Gateway, Route Table, Security Group và một EC2 instance chạy Ubuntu.\nNội dung Tạo VPC Tạo Subnet Tạo Internet Gateway và Route Table Tạo Security Group Tạo EC2 Instance Ubuntu Kết quả mong đợi Sau khi hoàn thành phần này, bạn sẽ có:\n✅ Một VPC riêng biệt tên TodoVPC ✅ Một subnet public tên TodoPublicSubnet ✅ Kết nối internet qua Internet Gateway và Route Table ✅ Security Group mở cổng SSH (22) và app (3000) ✅ EC2 Ubuntu sẵn sàng SSH và cài ứng dụng 💡 Nếu bạn đã từng tạo các thành phần này trước đây, có thể tận dụng lại để tiết kiệm thời gian. Tuy nhiên, nên thực hành đầy đủ để nắm vững quy trình triển khai hạ tầng AWS.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/4.1-setup-s3/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.1-setup-s3/",
 	"title": "Tạo S3 Bucket cho frontend",
 	"tags": [],
 	"description": "",
 	"content": "Tạo S3 bucket để lưu trữ frontend Trong bước này, bạn sẽ tạo một S3 bucket để lưu trữ source code giao diện tĩnh của ứng dụng To-do List.\n🔧 Bước 1: Truy cập giao diện quản lý S3 Vào Amazon S3 Console Click Create bucket 📥 Bước 2: Nhập thông tin bucket Bucket name: tên duy nhất, ví dụ: todo-frontend-\u0026lt;your-name\u0026gt; Bỏ chọn Block all public access để cho phép truy cập public Check xác nhận cảnh báo bảo mật 🛡️ Bước 3: Tắt chặn truy cập public Sau khi tạo, vào tab Permissions Tìm mục Block public access (bucket settings) Click Edit, bỏ chọn tất cả, rồi Save 🌍 Bước 4: Cho phép public đọc nội dung Vào tab Permissions → Bucket Policy → Edit Dán đoạn policy sau vào: { \u0026#34;Version\u0026#34;: \u0026#34;2012-10-17\u0026#34;, \u0026#34;Statement\u0026#34;: [ { \u0026#34;Sid\u0026#34;: \u0026#34;PublicReadGetObject\u0026#34;, \u0026#34;Effect\u0026#34;: \u0026#34;Allow\u0026#34;, \u0026#34;Principal\u0026#34;: \u0026#34;*\u0026#34;, \u0026#34;Action\u0026#34;: \u0026#34;s3:GetObject\u0026#34;, \u0026#34;Resource\u0026#34;: \u0026#34;arn:aws:s3:::todo-frontend-\u0026lt;your-name\u0026gt;/*\u0026#34; } ] } Nhấn chọn Save Changes 📌 Thay bằng đúng tên bucket bạn đã đặt.\n✅ Bạn đã tạo thành công một bucket S3 có thể public để chứa frontend.\nTiếp theo, chúng ta sẽ upload mã nguồn HTML/CSS/JS lên bucket này. "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.1-createvpc/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.1-createvpc/",
 	"title": "Tạo VPC",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong bước này, bạn sẽ tạo một Virtual Private Cloud (VPC) tên là TodoVPC để chứa toàn bộ hạ tầng mạng của ứng dụng.\n🧭 Các bước thực hiện 1. Truy cập VPC Console Truy cập: VPC Console Chọn Your VPCs Click Create VPC 2. Cấu hình thông tin VPC Tại màn hình Create VPC:\nTrường Giá trị Name tag TodoVPC IPv4 CIDR block 10.10.0.0/16 Tenancy default Giữ nguyên các tùy chọn còn lại → Click Create VPC\n3. Kiểm tra trạng thái Sau khi tạo xong, kiểm tra danh sách VPCs để đảm bảo VPC TodoVPC có trạng thái available.\n✅ Kết quả mong đợi Tạo thành công VPC TodoVPC với dải IP riêng Sẵn sàng tạo subnet và các thành phần mạng khác bên trong VPC "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/",
 	"title": "Triển khai ứng dụng To-do List trên AWS",
 	"tags": [],
 	"description": "",
 	"content": "Mục tiêu của Workshop Trong workshop này, bạn sẽ học cách triển khai một ứng dụng web To-do List thực tế sử dụng Node.js và MongoDB trên hạ tầng AWS. Quá trình triển khai tuân theo tư duy DevOps: tự động hóa, kiểm thử, CI/CD và vận hành thực tế.\nĐây là một dự án thực hành DevOps hoàn chỉnh từ đầu đến cuối, giúp bạn kết nối giữa coding và vận hành.\nYêu cầu Tài khoản AWS có quyền tạo EC2, VPC, S3, IAM, và CloudFront. Kiến thức cơ bản về SSH, Linux, Git. Đã cài đặt công cụ: Git, SSH client, trình duyệt. Bạn sẽ phát sinh chi phí khi triển khai trên AWS. Hãy đảm bảo bạn có quyền truy cập và theo dõi billing.\nTổng quan nội dung Giới thiệu\nGiới thiệu tổng quan về dự án To-do List và kiến trúc triển khai trên AWS.\nCác bước chuẩn bị\nTạo EC2, cài đặt môi trường, kiểm thử ứng dụng To-do List chạy local trên server.\nTriển khai dịch vụ AWS\nCấu hình domain, S3, CloudFront, gắn ứng dụng public.\nThiết lập CI/CD với GitHub Actions\nTự động build \u0026amp; deploy mỗi lần push source.\nQuản trị \u0026amp; Giải phóng tài nguyên\nTheo dõi, tối ưu và dọn dẹp tài nguyên sau khi sử dụng.\nKiến trúc triển khai Ứng dụng được chia làm hai phần:\nBackend Node.js: chạy trên EC2, kết nối MongoDB cài đặt local. Frontend tĩnh: build React app \u0026amp; deploy lên S3 + CloudFront. Đây là kiến trúc đơn giản nhưng thực tế, giúp bạn tiếp cận nhanh chóng các dịch vụ cốt lõi của AWS.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.1-deploy-on-ec2/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.1-deploy-on-ec2/",
 	"title": "Triển khai ứng dụng trên EC2",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong phần này, bạn sẽ thiết lập ứng dụng Node.js để chạy nền bằng PM2, giúp ứng dụng luôn hoạt động ổn định kể cả khi EC2 instance bị khởi động lại.\n1. SSH vào EC2 Từ máy tính của bạn, mở terminal và chạy lệnh sau (đảm bảo đang ở thư mục chứa file .pem):\nssh -i LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; 2. Cài đặt PM2 PM2 là process manager giúp quản lý ứng dụng Node.js chạy nền:\nnpm install -g pm2 Kiểm tra cài đặt: pm2 --version 3. Khởi chạy ứng dụng với PM2 1. Di chuyển vào thư mục ứng dụng: cd ~/todo-app 2. Khởi động ứng dụng với PM2: pm2 start app.js --name todo-app 3. Kiểm tra trạng thái: pm2 list Bạn sẽ thấy output tương tự:\n┌─────┬──────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐\r│ id │ name │ namespace │ version │ mode │ pid │ uptime │ ↺ │ status │ cpu │ mem │ user │ watching │\r├─────┼──────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤\r│ 0 │ todo-app │ default │ 1.0.0 │ fork │ 12345 │ 2s │ 0 │ online │ 0% │ 25.2mb │ ubuntu │ disabled │\r└─────┴──────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘ 4. Thiết lập tự khởi động sau reboot 1. Tạo startup script: pm2 startup 2. Lệnh trên sẽ in ra một dòng như sau (ví dụ): sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v20.5.0/bin \\\\ pm2 startup systemd -u ubuntu --hp /home/ubuntu 3. Hãy copy dòng đó và chạy lại trong terminal. 4. Lưu trạng thái hiện tại: pm2 save 5. Kiểm tra sau reboot (tùy chọn) 1. Thử reboot EC2: sudo reboot 2. Sau khi EC2 khởi động lại, SSH lại vào: ssh -i LabKeypair.pem ubuntu@\u0026lt;EC2_PUBLIC_IP\u0026gt; 3. Kiểm tra PM2: pm2 list Ứng dụng todo-app vẫn sẽ đang chạy.\n4. Test ứng dụng: curl http://localhost:3000 6. Các lệnh PM2 hữu ích Quản lý processes: # Xem logs realtime pm2 logs todo-app # Restart ứng dụng pm2 restart todo-app # Stop ứng dụng pm2 stop todo-app # Xem thông tin chi tiết pm2 show todo-app # Monitoring dashboard pm2 monit Troubleshooting: # Nếu ứng dụng không start pm2 logs todo-app --lines 50 # Kiểm tra file có tồn tại không ls -la ~/todo-app/app.js # Kiểm tra port có bị chiếm không sudo netstat -tlnp | grep :3000 7. Kiểm tra ứng dụng từ browser 1. Đảm bảo Security Group đã mở port 3000: Vào AWS Console → EC2 → Security Groups Thêm Inbound Rule: Type: Custom TCP, Port: 3000, Source: 0.0.0.0/0 2. Truy cập ứng dụng: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 Kết quả mong đợi ✅ Ứng dụng chạy ổn định với PM2 ✅ Tự động khởi động lại sau reboot ✅ Có thể truy cập từ browser ✅ Logs được quản lý bởi PM2 💡 Chúc mừng! Bạn đã hoàn tất việc triển khai ứng dụng Node.js dạng chạy nền trên EC2 bằng PM2.\nĐể tối ưu hóa production, hãy xem xét sử dụng reverse proxy như Nginx và SSL certificate cho HTTPS.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/5-cleanup/5.1-delete-resources/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/5.1-delete-resources/",
 	"title": "Xoá EC2, S3, CloudFront, Security Group &amp; Key Pair",
 	"tags": [],
 	"description": "",
 	"content": "Trong bước này, bạn sẽ xóa các tài nguyên sau:\nEC2 Instance Security Group S3 Bucket CloudFront Distribution Key Pair (nếu không dùng nữa) 🧹 1. Xoá EC2 Instance Truy cập EC2 Console Chọn instance tên To-do EC2 Bấm Instance State → Terminate instance Xác nhận 🧹 2. Xoá Security Group Truy cập menu Security Groups (trong EC2 hoặc VPC) Xoá security group tên TodoSG 💡 Nếu security group còn gắn với EC2 hoặc resource nào khác, bạn cần gỡ ra trước khi xóa.\n🧹 3. Xoá Key Pair Truy cập EC2 → Key Pairs Nếu bạn đã tạo LabKeypair hoặc tương tự chỉ để thực hành, bạn có thể xóa. 🧹 4. Xoá S3 Bucket Truy cập S3 Console Chọn bucket chứa static site (ví dụ: todo-frontend-bucket) Bấm Empty trước → sau đó Delete bucket 🧹 5. Xoá CloudFront Distribution Truy cập CloudFront Console Chọn distribution vừa tạo → Disable Sau khi trạng thái là Disabled, bấm Delete ⚠️ CloudFront cần vài phút để chuyển sang trạng thái Disabled trước khi xoá được.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/",
 	"title": "Các bước chuẩn bị",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong phần này, bạn sẽ chuẩn bị hạ tầng cần thiết để triển khai ứng dụng web To-do List sử dụng Node.js và MongoDB (cài đặt local) trên EC2.\n📦 Nội dung Phần chuẩn bị bao gồm 2 bước chính:\n🏗️ 2.1. Tạo hạ tầng mạng và EC2 Instance Bạn sẽ tạo các thành phần cần thiết:\n✅ VPC riêng biệt với 2 subnet: public và private ✅ Security Group mở cổng 22 và 3000 cho EC2 ✅ EC2 Instance chạy Ubuntu làm backend server (MongoDB local) ⚙️ 2.2. Cài đặt môi trường ứng dụng trên EC2 Bạn sẽ SSH vào EC2 và thực hiện:\n✅ Cài Node.js, MongoDB và các công cụ phụ trợ ✅ Clone source code To-do List từ GitHub ✅ Kiểm tra ứng dụng chạy trên cổng 3000 thông qua IP public 🎯 Kết quả mong đợi Sau khi hoàn thành phần này, bạn sẽ có:\n✅ EC2 instance đang chạy Ubuntu ✅ Đầy đủ Node.js và MongoDB ✅ Ứng dụng To-do List chạy được qua public IP ✅ Môi trường sẵn sàng cho các bước tiếp theo 💡 Lưu ý: Một số bước như cài đặt Node.js, MongoDB hoặc SSH không phải là dịch vụ AWS, nhưng rất quan trọng để triển khai ứng dụng thực tế, vì vậy vẫn được đưa vào workshop này.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/",
 	"title": "Cài đặt môi trường ứng dụng",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong phần này, bạn sẽ SSH vào EC2 instance để cài đặt môi trường Node.js và MongoDB (cài đặt local), chuẩn bị để chạy ứng dụng web To-do List.\n🧰 Nội dung Bạn sẽ thực hiện 3 bước quan trọng để chuẩn bị môi trường ứng dụng:\n✅ Cài đặt Node.js và MongoDB ✅ Cấu hình ứng dụng To-do List và kiểm thử ✅ Thiết lập PM2 để ứng dụng luôn chạy nền và khởi động cùng hệ thống 📚 Mục lục 2.2.1 – Cài đặt Node.js và MongoDB 2.2.2 – Cấu hình ứng dụng và chạy thử 2.2.3 – Thiết lập PM2 để chạy nền 💡 Đây là bước quan trọng để đảm bảo ứng dụng hoạt động ổn định trước khi tiến hành deploy thực sự với CI/CD và các dịch vụ khác của AWS.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.2-config-run-app/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.2-config-run-app/",
 	"title": "Cấu hình ứng dụng và chạy thử",
 	"tags": [],
 	"description": "",
 	"content": "Clone mã nguồn 1. Tạo thư mục dự án: mkdir -p ~/todo-app \u0026amp;\u0026amp; cd ~/todo-app 2. Clone mã nguồn từ GitHub: git clone https://github.com/your-username/todo-list-app.git . 3. Cài đặt các gói phụ thuộc: npm install Cấu hình .env (nếu cần) 1. Tạo file .env nếu chưa có: touch .env 2. Thêm cấu hình MongoDB local: MONGO_URI=mongodb://localhost:27017/todoapp PORT=3000 Chạy ứng dụng thử 1. Chạy ứng dụng: node app.js 2. Truy cập trình duyệt và nhập: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 3. Kiểm tra xem giao diện web To-do List đã hiển thị chưa. Nếu bạn không truy cập được, hãy kiểm tra lại:\nCổng 3000 đã mở trong Security Group Dịch vụ đã được start thành công Địa chỉ IP là đúng public IP của EC2 instance "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/",
 	"title": "Push code và kiểm tra deploy",
 	"tags": [],
 	"description": "",
 	"content": "Push code và kiểm tra workflow Sau khi đã tạo file workflow CI/CD, bạn có thể kiểm tra bằng cách push lên GitHub.\n🚀 Bước 1: Push code lên GitHub git add . git commit -m \u0026#34;Thiết lập CI/CD deploy với GitHub Actions\u0026#34; git push origin main 📦 Bước 2: Kiểm tra workflow trên GitHub Truy cập repo GitHub của bạn Vào tab Actions Chọn workflow Deploy To EC2 Kiểm tra quá trình thực thi các bước: Kết nối EC2 Pull code Cài npm install Khởi động lại ứng dụng với PM2 🌐 Bước 3: Truy cập ứng dụng Mở trình duyệt và truy cập vào:\nhttp://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 Nếu mọi thứ chính xác, bạn sẽ thấy giao diện web To-do List hoạt động đúng sau mỗi lần push code.\nBạn nên kiểm tra pm2 logs trên EC2 nếu ứng dụng không phản hồi sau deploy.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.2-createpublicsubnet/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.2-createpublicsubnet/",
 	"title": "Tạo Subnet",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong bước này, bạn sẽ tạo một Public Subnet nằm trong VPC TodoVPC. Subnet này sẽ cho phép EC2 của bạn truy cập internet thông qua IP công cộng.\n🌐 Tạo Public Subnet TodoPublicSubnet 1. Truy cập Subnet Console Truy cập VPC Console Chọn Subnets từ menu bên trái Click Create subnet 2. Cấu hình Subnet Tại trang Create subnet:\nTrường Giá trị VPC ID Chọn TodoVPC Subnet name TodoPublicSubnet Availability Zone ap-southeast-1a (hoặc AZ đầu tiên) IPv4 CIDR block 10.10.1.0/24 → Click Create subnet\n3. Bật Public IP tự động Sau khi tạo xong:\nChọn subnet TodoPublicSubnet trong danh sách Click Actions → Edit subnet settings Tại mục Auto-assign IPv4, chọn Enable Click Save ✅ Kết quả mong đợi Tạo thành công TodoPublicSubnet với CIDR 10.10.1.0/24 Tự động cấp phát Public IP cho các EC2 nằm trong subnet này "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/",
 	"title": "Thiết lập CI/CD với GitHub Actions",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong phần này, bạn sẽ cấu hình workflow CI/CD bằng GitHub Actions để tự động build và deploy ứng dụng Node.js lên EC2 mỗi khi có thay đổi mã nguồn trên GitHub.\nNội dung Tạo file workflow CI/CD Push code và kiểm tra deploy "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/4.2-deploy-static-site/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.2-deploy-static-site/",
 	"title": "Triển khai static site lên S3",
 	"tags": [],
 	"description": "",
 	"content": "Triển khai static site lên S3 Trong bước này, bạn sẽ upload giao diện tĩnh (HTML, CSS, JS) của ứng dụng To-do List lên S3 bucket để public trên web.\n📁 Bước 1: Chuẩn bị mã nguồn giao diện Mở thư mục project To-do List Vào thư mục chứa frontend (ví dụ public/ hoặc frontend/) Đảm bảo có file index.html và các file tĩnh cần thiết khác (style.css, script.js, v.v.) ☁️ Bước 2: Upload giao diện lên S3 Cách 1: Dùng AWS CLI (khuyến khích) aws s3 sync ./public s3://todo-frontend-\u0026lt;your-name\u0026gt; --acl public-read ./public: thư mục chứa file giao diện\nThay bằng tên bucket thực tế\nCách 2: Dùng giao diện AWS S3 Vào bucket bạn đã tạo Click Upload → Add files hoặc Add folder Chọn toàn bộ nội dung frontend (index.html, assets, v.v.) Click Upload 🌐 Bước 3: Bật Static Website Hosting Trong bucket → tab Properties Kéo xuống phần Static website hosting Click Edit Chọn Enable Nhập: Index document: index.html (Nếu có) Error document: 404.html Click Save changes 🧪 Bước 4: Truy cập trang web Sau khi bật Static website hosting, bạn sẽ thấy Bucket website endpoint\nClick vào link đó hoặc copy dán vào trình duyệt\n📌 Ví dụ: http://todo-frontend-yourname.s3-website-ap-southeast-1.amazonaws.com\n✅ Giao diện frontend To-do List đã được triển khai thành công trên S3.\nTiếp theo, ta sẽ cấu hình CloudFront để tăng tốc và cấp phát domain đẹp.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/5-cleanup/5.2-delete-vpc/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/5.2-delete-vpc/",
 	"title": "Xoá VPC và các thành phần liên quan",
 	"tags": [],
 	"description": "",
 	"content": "Sau khi xóa toàn bộ EC2, bạn có thể xóa VPC tùy chỉnh và các thành phần liên quan:\n🧹 1. Xoá Subnet Truy cập VPC Console Chọn Subnets → Xóa cả TodoPublicSubnet nếu không còn dùng 🧹 2. Xoá Internet Gateway Chọn Internet Gateways Detach khỏi VPC nếu đang gắn → rồi Delete 🧹 3. Xoá Route Table Chọn Route Tables Chọn custom route table → Delete 🧹 4. Xoá VPC Vào Your VPCs Chọn TodoVPC → bấm Delete ✅ Sau khi hoàn tất, bạn đã giải phóng toàn bộ tài nguyên AWS đã sử dụng trong workshop này.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/",
 	"title": "Cấu hình CloudFront phân phối nội dung",
 	"tags": [],
 	"description": "",
 	"content": "Cấu hình CloudFront phân phối nội dung Trong bước này, bạn sẽ cấu hình CloudFront để phân phối nội dung giao diện tĩnh từ S3 với tốc độ nhanh hơn và domain dễ nhớ hơn.\n🌐 Bước 1: Truy cập CloudFront Mở AWS CloudFront Console Click Create Distribution 📥 Bước 2: Cấu hình Origin Tại phần Origin Settings:\nOrigin domain: Chọn bucket S3 bạn đã bật Static website hosting\n⛔ Không chọn loại S3 endpoint mặc định (s3.amazonaws.com), hãy chọn loại có dạng s3-website... Origin access: Chọn Public (nếu bạn chưa dùng OAC) Viewer protocol policy: Chọn Redirect HTTP to HTTPS 🛠️ Bước 3: Cấu hình default behavior Cache policy: CachingOptimized Response headers policy: SecurityHeadersPolicy (nếu có) Compress objects automatically: ✅ Enabled Click Create distribution 🕒 Bước 4: Chờ CloudFront hoạt động Bạn sẽ thấy một dòng trạng thái “In Progress” Chờ khoảng 5–10 phút đến khi chuyển sang Enabled 🔗 Bước 5: Truy cập qua CloudFront Tại cột Domain name, bạn sẽ thấy tên miền có dạng:\nd123456abcdef8.cloudfront.net\nTruy cập domain đó để xem frontend hoạt động ✅ Hoàn tất Giao diện To-do List đã được phân phối toàn cầu thông qua CloudFront!\nBạn có thể sử dụng domain CloudFront này để kết nối frontend với API (backend chạy trên EC2).\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.3-create-igw-rtb/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.3-create-igw-rtb/",
 	"title": "Tạo Internet Gateway và Route Table",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong bước này, bạn sẽ tạo Internet Gateway và Route Table, sau đó gắn với subnet để EC2 có thể truy cập Internet.\n🌐 Tạo Internet Gateway TodoIGW 1. Truy cập Console Truy cập VPC Console Chọn Internet Gateways → Click Create internet gateway 2. Cấu hình IGW Trường Giá trị Name tag TodoIGW → Click Create internet gateway\n3. Gắn IGW vào VPC Chọn TodoIGW mới tạo Click Actions → Attach to VPC Chọn VPC: TodoVPC → Click Attach 📡 Tạo Route Table TodoPublicRTB 4. Tạo Route Table mới Truy cập lại VPC Console Chọn Route Tables → Click Create route table Trường Giá trị Name tag TodoPublicRTB VPC TodoVPC → Click Create route table\n🔁 Thêm Route Internet và Gán Subnet 5. Thêm route tới Internet Chọn TodoPublicRTB mới tạo Tab Routes → Click Edit routes → Add route Trường Giá trị Destination 0.0.0.0/0 Target TodoIGW (Internet Gateway) → Click Save changes\n6. Gán với Public Subnet Tab Subnet associations → Click Edit subnet associations Tick chọn: TodoPublicSubnet → Click Save associations ✅ Sau bước này, EC2 trong subnet TodoPublicSubnet sẽ có thể truy cập Internet.\n🔧 Ghi chú: Đảm bảo subnet TodoPublicSubnet đã được cấu hình bật Auto-assign IPv4 ở bước 2.1.2, để EC2 nhận được IP công cộng.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.3-setup-pm2/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.3-setup-pm2/",
 	"title": "Thiết lập PM2 để chạy nền",
 	"tags": [],
 	"description": "",
 	"content": "Cài đặt PM2 PM2 là một process manager giúp ứng dụng Node.js luôn chạy nền và tự khởi động lại khi gặp lỗi hoặc sau khi reboot máy.\n1. Cài đặt PM2: npm install -g pm2 Chạy ứng dụng với PM2 1. Điều hướng vào thư mục chứa project: cd ~/todo-app 2. Chạy ứng dụng bằng PM2: pm2 start app.js --name todo-app 3. Kiểm tra trạng thái: pm2 status Thiết lập khởi động cùng hệ thống 1. Kích hoạt PM2 khởi động cùng hệ thống: pm2 startup 2. Thực thi dòng lệnh được in ra (ví dụ): sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.17.0/bin \\\\ pm2 startup systemd -u ubuntu --hp /home/ubuntu 3. Lưu trạng thái: pm2 save Kiểm tra lại ứng dụng 1. Truy cập lại trình duyệt: http://\u0026lt;EC2_PUBLIC_IP\u0026gt;:3000 2. Nếu máy chủ khởi động lại, ứng dụng vẫn sẽ chạy nhờ PM2. Các lệnh PM2 hữu ích # Xem logs pm2 logs todo-app # Restart ứng dụng pm2 restart todo-app # Stop ứng dụng pm2 stop todo-app # Xóa ứng dụng khỏi PM2 pm2 delete todo-app # Xem thông tin chi tiết pm2 show todo-app PM2 cũng hỗ trợ log, restart tự động, cluster mode và quản lý nhiều ứng dụng — rất hữu ích cho môi trường production.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/",
 	"title": "Triển khai backend và CI/CD",
 	"tags": [],
 	"description": "",
 	"content": "\rChương này hướng dẫn bạn triển khai ứng dụng Node.js (To-do List) trên EC2 và thiết lập CI/CD bằng GitHub Actions để tự động triển khai mỗi khi có thay đổi.\nMục tiêu: Triển khai ứng dụng thực tế bằng script tự động khi EC2 khởi động Thiết lập reverse proxy với Nginx để phục vụ ứng dụng qua cổng 80 Thiết lập tường lửa hợp lý Tự động hoá deploy backend bằng GitHub Actions Nội dung Triển khai ứng dụng Node.js lên EC2 Thiết lập CI/CD với GitHub Actions "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.4-create-security-group/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.4-create-security-group/",
 	"title": "Tạo Security Group",
 	"tags": [],
 	"description": "",
 	"content": "Tạo Security Group cho ứng dụng Chúng ta sẽ tạo một Security Group mới để mở các port cần thiết cho việc triển khai ứng dụng web To-do List trên EC2:\nMở port 22 để SSH vào server Mở port 3000 để truy cập ứng dụng web Các bước thực hiện Truy cập EC2 Console \u0026gt; Security Groups Click Create security group Cấu hình: Security group name: TodoSG Description: Security Group for To-do List App VPC: chọn TodoVPC Thêm Inbound rules: Type: SSH | Protocol: TCP | Port: 22 | Source: My IP Type: Custom TCP | Protocol: TCP | Port: 3000 | Source: 0.0.0.0/0 💡 Mở port 3000 cho toàn bộ internet vì ứng dụng của bạn sẽ chạy trên cổng này. Bạn có thể giới hạn IP nếu chỉ cần truy cập nội bộ.\nGiữ nguyên Outbound rule (Allow all traffic)\nClick Create security group\n✅ Sau bước này, bạn đã có Security Group TodoSG sẵn sàng gán cho EC2 ở bước tiếp theo.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/",
 	"title": "Triển khai frontend tĩnh với S3 và CloudFront",
 	"tags": [],
 	"description": "",
 	"content": "\rTrong chương này, bạn sẽ triển khai giao diện web tĩnh (HTML/CSS/JS) của ứng dụng To-do List lên dịch vụ Amazon S3, sau đó sử dụng CloudFront để phân phối nội dung qua CDN.\n✅ Mục tiêu Tạo bucket S3 để lưu trữ static site Cấu hình bucket cho phép public truy cập Triển khai frontend qua AWS CLI hoặc giao diện Tạo CloudFront Distribution để phân phối web toàn cầu 📚 Nội dung Tạo S3 Bucket cho frontend Triển khai static site lên S3 Cấu hình CloudFront phân phối nội dung "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/5-cleanup/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/",
 	"title": "Giải phóng tài nguyên",
 	"tags": [],
 	"description": "",
 	"content": "Sau khi hoàn thành workshop, bạn nên xóa các tài nguyên AWS không còn sử dụng để tránh phát sinh chi phí.\nCác tài nguyên bạn đã sử dụng:\nEC2 Instance (Ubuntu) Security Group Key Pair (nếu tạo mới) S3 Bucket chứa frontend static CloudFront Distribution VPC và các thành phần liên quan Nội dung Xoá EC2, S3, CloudFront, Security Group \u0026amp; Key Pair Xoá VPC và các thành phần liên quan "
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.5-create-ec2-ubuntu/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.5-create-ec2-ubuntu/",
 	"title": "Tạo EC2 Ubuntu Instance",
 	"tags": [],
 	"description": "",
 	"content": "Tạo EC2 Instance Truy cập EC2 Console Click Launch Instance Cấu hình: Trường Giá trị Name todo-ubuntu AMI Ubuntu Server 22.04 LTS (64-bit) Instance type t2.micro Key pair Chọn hoặc tạo mới Network TodoVPC Subnet TodoPublicSubnet Auto-assign IP Enable Security Group TodoSG 💡 Đảm bảo subnet TodoPublicSubnet đã bật Auto-assign IPv4 để EC2 nhận IP công cộng, giúp bạn SSH và truy cập web app dễ dàng.\nClick Launch Instance để tạo ✅ Sau bước này, EC2 instance đã sẵn sàng để SSH và cài đặt ứng dụng.\n"
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/categories/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/categories/",
 	"title": "Categories",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/tags/",
+	"uri": "https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/tags/",
 	"title": "Tags",
 	"tags": [],
 	"description": "",

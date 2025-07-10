@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Push code và kiểm tra deploy on AWS System Manager</title>
-    <link>https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/</link>
+    <link>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/</link>
     <description>Recent content in Push code và kiểm tra deploy on AWS System Manager</description>
     <generator>Hugo</generator>
     <language>vi</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

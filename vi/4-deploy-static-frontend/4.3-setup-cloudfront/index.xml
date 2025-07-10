@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cấu hình CloudFront phân phối nội dung on AWS System Manager</title>
-    <link>https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/</link>
+    <link>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/</link>
     <description>Recent content in Cấu hình CloudFront phân phối nội dung on AWS System Manager</description>
     <generator>Hugo</generator>
     <language>vi</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://github.com/phanthanhdanhda/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
