@@ -30,7 +30,9 @@ aws s3 sync ./public s3://todo-frontend-<your-name> --acl public-read
 
 {{% notice tip %}}
 ./public: thư mục chứa file giao diện
+{{% /notice %}}
 
+{{% notice tip %}}
 Thay <your-name> bằng tên bucket thực tế
 {{% /notice %}}
 
