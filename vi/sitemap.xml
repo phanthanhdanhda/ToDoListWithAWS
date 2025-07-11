@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.1-install-node/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/1-introduce/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -29,7 +29,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.1-create-workflow/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -42,7 +42,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -55,7 +55,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.1-setup-s3/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -68,7 +68,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.1-createvpc/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -81,7 +81,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -94,7 +94,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.1-deploy-on-ec2/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -107,7 +107,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/5.1-delete-resources/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -120,7 +120,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -133,7 +133,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -146,7 +146,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.2-config-run-app/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -159,7 +159,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/3.2.2-test-deploy/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -172,7 +172,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.2-createpublicsubnet/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -185,7 +185,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/3.2-setup-cicd-githubactions/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -198,7 +198,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.2-deploy-static-site/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -211,7 +211,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/5.2-delete-vpc/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -224,7 +224,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/4.3-setup-cloudfront/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -237,7 +237,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.3-create-igw-rtb/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -250,7 +250,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.2-installenvironment/2.2.3-setup-pm2/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -263,7 +263,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/3-deploy-cicd/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -276,7 +276,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.4-create-security-group/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -289,7 +289,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/4-deploy-static-frontend/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -302,7 +302,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/5-cleanup/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -315,7 +315,7 @@
                 />
   </url><url>
     <loc>https://phanthanhdanhda.github.io/ToDoListWithAWS/vi/2-prerequiste/2.1-createec2/2.1.5-create-ec2-ubuntu/</loc>
-    <lastmod>2025-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2025-07-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
