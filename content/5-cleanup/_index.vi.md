@@ -1,6 +1,6 @@
 ---
 title: "Giải phóng tài nguyên"
-date: 2025-05-25
+date: 2025-07-10
 weight: 5
 chapter: true
 ---

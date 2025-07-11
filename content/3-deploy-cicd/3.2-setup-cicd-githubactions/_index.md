@@ -1,6 +1,6 @@
 ---
 title: "Set up CI/CD with GitHub Actions"
-date: 2025-05-25
+date: 2025-07-10
 weight: 2
 chapter: false
 pre: " <b> 3.2 </b> "

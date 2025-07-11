@@ -1,6 +1,6 @@
 ---
 title: "Deploy static frontend with S3 and CloudFront"
-date: 2025-05-25
+date: 2025-07-10
 weight: 4
 chapter: true
 pre: "<b> 4. </b>"

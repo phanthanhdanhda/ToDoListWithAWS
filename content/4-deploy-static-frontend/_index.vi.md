@@ -1,6 +1,6 @@
 ---
 title: "Triển khai frontend tĩnh với S3 và CloudFront"
-date: 2025-05-25
+date: 2025-07-10
 weight: 4
 chapter: true
 pre: "<b> 4. </b>"

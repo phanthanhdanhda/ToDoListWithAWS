@@ -1,6 +1,6 @@
 ---
 title: "Triển khai static site lên S3"
-date: 2025-05-25
+date: 2025-07-10
 weight: 2
 chapter: false
 pre: "<b> 4.2 </b>"

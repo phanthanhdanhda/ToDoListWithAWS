@@ -1,6 +1,6 @@
 ---
 title: "Configure CloudFront for content delivery"
-date: 2025-05-25
+date: 2025-07-10
 weight: 3
 chapter: false
 pre: "<b> 4.3 </b>"

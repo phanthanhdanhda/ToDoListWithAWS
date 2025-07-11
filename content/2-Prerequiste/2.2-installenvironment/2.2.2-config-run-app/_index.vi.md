@@ -1,6 +1,6 @@
 ---
 title: "Cấu hình ứng dụng và chạy thử"
-date: 2025-05-25
+date: 2025-07-10
 weight: 2
 chapter: false
 pre: "<b>2.2.2</b>"

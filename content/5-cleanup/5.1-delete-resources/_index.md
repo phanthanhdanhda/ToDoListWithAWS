@@ -1,6 +1,6 @@
 ---
 title: "Delete EC2, S3, CloudFront, Security Group & Key Pair"
-date: 2025-05-25
+date: 2025-07-10
 weight: 1
 chapter: false
 pre: " <b> 5.1 </b> "

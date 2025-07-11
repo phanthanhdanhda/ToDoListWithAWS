@@ -1,6 +1,6 @@
 ---
 title: "Triển khai ứng dụng To-do List trên AWS"
-date: 2025-05-25
+date: 2025-07-10
 weight: 1
 chapter: true
 ---

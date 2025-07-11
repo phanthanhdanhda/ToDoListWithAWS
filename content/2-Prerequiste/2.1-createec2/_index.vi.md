@@ -1,6 +1,6 @@
 ---
 title: "Tạo hạ tầng mạng và EC2 Instance"
-date: 2025-05-25
+date: 2025-07-10
 weight: 1
 chapter: false
 pre: " <b> 2.1 </b> "

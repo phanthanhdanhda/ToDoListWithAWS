@@ -1,6 +1,6 @@
 ---
 title: "Create CI/CD workflow file"
-date: 2025-05-25
+date: 2025-07-10
 weight: 1
 chapter: false
 pre: "<b>3.2.1</b>"
